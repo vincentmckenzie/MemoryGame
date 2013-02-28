@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!--
+* @file index.html
+* @author Ali Sarrafi
+*
+* Example Application that shows how you can use JavaScript
+* with NativeUI and device APIs.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<script src="js/wormhole.js"></script>
+	<script src="main.js"></script>
+	<script>
+		/**
+		 * Called by the NativeUI library when the UI is ready to
+		 * be shown. Show the main screen here.
+		 *
+		 * Here we illustrate how to add events to widgets and how to
+		 * create widgets from JavaScript code.
+		 */
+		mosync.nativeui.UIReady = function()
+		{
+			// Show the main screen.
+			var mainScreen = document.getNativeElementById("mainScreen");
+			mainScreen.show();
+
+			showDeviceInfo();
+		}
+
+		// Register event listeners.
+
+		// The "deviceready" event is sent when the system
+		// has finished loading. Here we initialise the UI.
+		document.addEventListener(
+			"deviceready",
+			function()
+			{
+				// Will call mosync.nativeui.UIReady.
+				mosync.nativeui.initUI();
+			},
+			true);
+
+		// Close the application when the back key is pressed.
+		document.addEventListener(
+			"backbutton",
+			function()
+			{
+				mosync.app.exit();
+			},
+			true);
+	</script>
+</head>
+
+<body>
+	<!-- All of the Native UI widgets should be wrapped inside a tag with id="NativeUI" -->
+	<div id="NativeUI">
+		<!-- The element with id="mainScreen" is start screen. -->
+		<div data-widgetType="TabScreen" id="mainScreen">
+			<!-- Device Screen -->
+			<div data-widgetType="Screen"
+				id="DeviceScreen"
+				data-title="Device"
+				data-icon_android="img/Android_TabIconDevice.png"
+				data-icon_iOS="img/IOS_TabIconDevice.png">
+				<div data-widgetType="VerticalLayout"
+					id="DeviceInfoLayout"
+					data-width="FILL_AVAILABLE_SPACE"
+					data-height="FILL_AVAILABLE_SPACE">
+					<div widgetType="Label"
+						id="DeviceOSLabel"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Platform:">
+					</div>
+					<div data-widgetType="Label"
+						id="OSVersionLabel"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="OSVersion:">
+					</div>
+					<div data-widgetType="Label"
+						id="UUIDLabel"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="UUID:">
+					</div>
+					<div data-widgetType="Label"
+						id="DeviceNameLabel"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Device Name:">
+					</div>
+					<div widgetType="Button"
+						id="VibrateButton"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Vibrate"
+						data-onevent="navigator.notification.vibrate(500)" ></div>
+					<div data-widgetType="Button"
+						id="BeepButton"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Beep"
+						data-onevent="navigator.notification.beep(3)" ></div>
+				</div>
+			</div>
+			<!-- Sensor Screen -->
+			<div data-widgetType="Screen"
+				id="SensorScreen"
+				data-title="Sensors"
+				data-icon_android="img/Android_TabIconSensor.png"
+				data-icon_iOS="img/IOS_TabIconSensor.png">
+				<div data-widgetType="VerticalLayout"
+					id="SensorsLayout"
+					data-width="FILL_AVAILABLE_SPACE">
+					<div data-widgetType="HorizontalLayout"
+						id="AccelerometerLayout"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-height="WRAP_CONTENT">
+						<div data-widgetType="Label"
+							id="AccelX"
+							data-width="FILL_AVAILABLE_SPACE"
+							data-fontSize="24"
+							data-text="X:">
+						</div>
+						<div data-widgetType="Label"
+							id="AccelY"
+							data-width="FILL_AVAILABLE_SPACE"
+							data-fontSize="24"
+							data-text="Y:">
+						</div>
+						<div data-widgetType="Label"
+							id="AccelZ"
+							data-width="FILL_AVAILABLE_SPACE"
+							data-fontSize="24"
+							data-text="Z:">
+						</div>
+					</div>
+					<div data-widgetType="Button"
+						id="ToggleAccelButton"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Toggle Accelerometer (is off)"
+						data-onevent="toggleAccelPhonegap()">
+					</div>
+					<div data-widgetType="HorizontalLayout"
+						id="LocationLayout" data-width="FILL_AVAILABLE_SPACE">
+						<div data-widgetType="Label"
+							id="LocLat"
+							data-width="FILL_AVAILABLE_SPACE"
+							data-fontSize="24"
+							data-text="Latitude:">
+						</div>
+						<div data-widgetType="Label"
+							id="LocLong"
+							data-width="FILL_AVAILABLE_SPACE"
+							data-fontSize="24"
+							data-text="Longtitude:">
+						</div>
+					</div>
+					<div data-widgetType="Button"
+						id="ToggleLocButton"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Toggle Location (is off)"
+						data-onevent="toggleGeolocation()">
+					</div>
+					<div data-widgetType="HorizontalLayout"
+						id="CompassLayout"
+						data-width="FILL_AVAILABLE_SPACE">
+						<div data-widgetType="Label"
+							id="CompassLabel"
+							data-width="FILL_AVAILABLE_SPACE"
+							data-fontSize="24"
+							data-text="Compass Heading:">
+						</div>
+					</div>
+					<div data-widgetType="Button"
+						id="ToggleCompassButton"
+						data-width="FILL_AVAILABLE_SPACE"
+						data-fontSize="24"
+						data-text="Toggle Compass (is off)"
+						data-onevent="toggleCompass()">
+					</div>
+				</div>
+			</div>
+			<!-- Map Screen -->
+			<div data-widgetType="Screen" id="MapScreen" data-title="Map"
+				data-icon_android="img/Android_TabIconMap.png"
+				data-icon_iOS="img/IOS_TabIconMap.png">
+				<div data-widgetType="WebView" id="WebView" data-width="FILL_AVAILABLE_SPACE" data-height="FILL_AVAILABLE_SPACE"
+					data-url="http://maps.google.com"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
