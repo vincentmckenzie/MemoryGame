@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Memory Game</title>    
+  
+  
+  <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.3.0.min.css">
+  <link rel="stylesheet" href="css/owncss.css">
+  <script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+  <script src="js/jquery.js"></script>  
+  <script src="js/jquery.mobile-1.3.0.js"></script>  
+  <script src="js/jquery.cookie.js"></script>
+  <script src="jquery.Storage.js"></script>
+        	 	    
+ <script type="text/javascript">
+		
+  document.addEventListener(
+				"backbutton",
+				function() { window.location.href='index.html'; },
+				true);
+    </script>
+    
+	</head> 
+ 	<!-------------------------------------------------------------------------->     
+	
+    
+    
+    <body id="bla">  
+		<h2>New user</h2><br><br>
+    <form>
+    Username: <input type="text" name="userName" width="200px"><br>
+    Password: <input type="password" name="pwd" width="200px"><br>
+    Date of birth: <input type="text" name="DateOfBirth" width="200px"><br>
+    Weight: <input type="text" name="Weight" width="200px">(+On/Off button!!)<br>
+    <input type="submit" value="Ok" id="button"><br>
+    <button data-inline="true" id="button" onClick="window.location.href='index.html'">Back to menu.</button> <br>
+    </form>
+    
+	</body>
+</html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<history selected="0">
+<device ix="0" name="S610267eb97c6" platform.profile="Android/Android" profile="" serialno="S610267eb97c6" transport="android"/>
+<device addr="303855F80AC2" ix="1" name="Xsider" platform.profile="Symbian/S60E5" port="5" profile="" transport="bt"/>
+<device addr="188796480C5C" ix="2" name="HTC Sensation XE with Beats Audio Z715e" platform.profile="Android/Android" port="12" profile="" transport="bt"/>
+<device addr="1489FD654D5A" ix="3" name="GT-I9300" platform.profile="Android/Android" port="12" profile="" transport="bt"/>
+<device addr="A06CECFC55FE" ix="4" name="&lt;Unresolved name&gt;" platform.profile="Android/Android" port="8" profile="" transport="bt"/>
+<device ix="5" name="4df145d814c39f01" platform.profile="Android/Android" profile="" serialno="4df145d814c39f01" transport="android"/>
+</history>

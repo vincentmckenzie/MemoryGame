@@ -1,0 +1,144 @@
+/**
+ * @file main.cpp
+ *
+ * This file contains the support code at the C++ level for
+ * an HTML5/JS application that has access to device services.
+ *
+ * You don't need to change anything in this code file unless
+ * you wish to add support for functions that are not available
+ * out-of-the box in wormhole.js.
+ */
+
+#include <Wormhole/HybridMoblet.h>
+#include "MAHeaders.h" // Defines BEEP_WAV
+#include <ma.h>
+#include <maassert.h>
+#include <conprint.h>
+#include <MAUtil/String.h>
+#include <MAUtil/FileLister.h>
+
+/**
+ * @file main.cpp
+ *
+ * This app demonstrates how to make a hybrid app that uses the
+ * MoSync Database C API. The app itself is a small game.
+ * More information is given in the tutorial document, which
+ * is available in the Tutorial folder (and also published on
+ * www.mosync.com).
+ *
+ * This file contains the C++ support code for the app. The main part
+ * if the implementation of the database services for the app. These
+ * are invoked from JavScript to store and read data.
+ */
+
+#include <conprint.h>
+#include <Wormhole/HybridMoblet.h>
+#include "MAHeaders.h"
+
+// Namespaces we want to access.
+using namespace MAUtil; // Class Moblet
+using namespace NativeUI; // WebView widget.
+using namespace Wormhole; // Wormhole library.
+
+
+/**
+ * Utility class that simplifies using the Database API.
+ */
+class DBUtil
+{
+public:
+	/**
+	 * Open a database.
+	 * @return Handle to database, < 0 on error.
+	 */
+	static MAHandle openDatabase(const char* fileName)
+	{
+		// Open the database. It will be created if it does not exist.
+		// The database will be created in the local directory of the
+		// application.
+		MAUtil::String path = DBUtil::getLocalPath();
+		path += fileName;
+		MAHandle db = maDBOpen(path.c_str());
+		return db;
+	}
+
+	/**
+	 * Get the path to the local file system.
+	 * @return Path that ends with a slash.
+	 */
+	static String getLocalPath()
+	{
+		int bufferSize = 1024;
+		char buffer[bufferSize];
+
+		int size = maGetSystemProperty(
+			"mosync.path.local",
+			buffer,
+			bufferSize);
+
+		// If there was an error, return default root path.
+		if (size < 0 || size > bufferSize)
+		{
+			return "/";
+		}
+
+		return buffer;
+	}
+
+	/**
+	 * Utility function that gets a text field as a string, using the
+	 * maDBCursorGetColumnText function.
+	 * @param cursor Handle to a cursor object.
+	 * @param column Zero-based index to the column to retrieve.
+	 * @param path Reference to string that will receive the field data.
+	 * @return MA_DB_OK on success, MA_DB_NULL if the field value is NULL,
+	 * or MA_DB_ERROR on error.
+	 */
+	static int getColumnString(MAHandle cursor, int column, String& text)
+	{
+		int bufferSize = 1024;
+		char buffer[bufferSize];
+
+		// Get the text value of the field.
+		int size = maDBCursorGetColumnText(cursor, column, buffer, bufferSize);
+
+		// If it went ok, copy text to result string.
+		if (size >= 0 && size < bufferSize)
+		{
+			// The text buffer is not zero terminated, so we do that now.
+			buffer[size] = 0;
+
+			// Copy to result string.
+			text = buffer;
+
+			return MA_DB_OK;
+		}
+		else if (MA_DB_NULL == size)
+		{
+			return MA_DB_NULL;
+		}
+		else
+		{
+			return MA_DB_ERROR;
+		}
+	}
+
+};
+
+/**
+ * The application class.
+ */
+class AppMoblet : public HybridMoblet
+{
+public:
+
+/**
+ * Main function that is called when the program starts.
+ * Here an instance of the MyMoblet class is created and
+ * the program enters the main event loop.
+ */
+extern "C" int MAMain()
+{
+	(new AppMoblet())->enterEventLoop();
+	return 0;
+}

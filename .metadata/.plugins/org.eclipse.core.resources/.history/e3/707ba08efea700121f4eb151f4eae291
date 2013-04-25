@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Memory Game</title>    
+  
+  
+  <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.3.0.min.css">
+  <link rel="stylesheet" href="css/owncss.css">
+  <script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+  <script src="js/jquery.js"></script>  
+  <script src="js/jquery.mobile-1.3.0.js"></script> 
+  <script src="js/jquery.cookie.js"></script>
+  <script src="jquery.Storage.js"></script> 
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css" />
+  <script type="text/javascript">
+ 
+ document.addEventListener(
+				"backbutton",
+				function() { window.location.href='Settings.html'; },
+				true);
+				
+	$(function() {
+    $( "#accordion" ).accordion();
+  });
+
+  </script>
+	</head> 
+ 	<!-------------------------------------------------------------------------------------------------------->  
+<body id="bla">   
+<h1>Memory Game</h1>
+<div id="accordion">
+  <h3 id="deH3">About</h3>
+  <div id="deP">
+    Welcome to this Memory Game!<br />
+    In this game you can see how alcohol, sports and sleep influences your memory skills.<br />
+    There come a few symbols on the screen and they increase with every stage you get.
+  </div>
+  <h3 id="deH3">How to play</h3>
+  <div id="deP">
+    When you start the game you see a few symbols. You need to remember these
+    in a certain time. After this time the symbols dissapear en you need to
+    put him back in the correct order by pushing on the symbols.
+  </div>
+  <h3 id="deH3">Different stages</h3>
+  <div id="deP">
+    		There are 3 difficulties between which you can choose.<br />
+    Easy: 	&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;You have 8 seconds to remember the symbols in the correct order.<br />
+    Medium: &nbsp; You have 6 seconds to remember the symbols in the correct order.<br />
+    Hard: 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You have 4 seconds to remember the symbols in the correct order.
+  </div>
+  <h3 id="deH3">Extra settings</h3>
+  <div id="deP">
+    There is an extra option in settings that you can choose to play with 10 instead of 5 different symbols to make it a little bit harder.<br /><br />
+    
+    You also can choose between 6 different themes of symbols depending on which theme you most like to play with.
+  </div>
+  <h3 id="deH3"><button data-inline="true" id="button" onClick="window.location.href='Settings.html'">Back to menu.</button></h3>
+  <div>
+  </div>
+</div>
+</body>
+</html>

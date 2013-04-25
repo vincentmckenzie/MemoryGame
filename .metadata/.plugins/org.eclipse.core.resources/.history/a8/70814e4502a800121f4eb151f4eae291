@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Memory Game</title>    
+  
+  
+  <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.3.0.min.css">
+  <link rel="stylesheet" href="css/owncss.css">
+  <script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+  <script src="js/jquery.js"></script>  
+  <script src="js/jquery.mobile-1.3.0.js"></script>  
+  <script src="js/jquery.cookie.js"></script>
+  <script src="js/jquery.Storage.js" type="text/javascript"></script>
+        	 	    
+ <script type="text/javascript">
+		
+ $(document).ready(function()
+		 {
+	 //alert("hallo");
+	 
+		 });
+
+//Constante: 
+var aantalIcootjes = 5;					//Het aantal verschillende icoontjes die er zijn.
+var tijdWeergeven = 3000;  				//De tijd dat de icoontjes op het scherm moeten blijven staan.
+var tijdToonNextLevelKnop = 3000; 		//De tijd die het duur voor de knop voor het volgende leven te tonen.
+var thema = 40;							//Deze variabele ga het level bepalen.
+										//1-5, 11-15, 21-26, 31-40, 41-50, 51-55
+										//Logo, Nat, Shape, Techolo, Trans, Symb
+
+//Variablen:
+var maxCount = 3;						//Het aantal icoontjes dat op het scherm getoont moet worden.
+var nummer; 							//Dit is de variabele die een random nummer zal krijgen voor een foto op het scherm te tonen.
+var getoondeItems = new Array();		//Dit is een array waar alle items die op het scherm worden getoond in de juiste volgorde zullen staan.
+var geselecteerdeItems = new Array();  	//Dit is een array hoe de speler denkt dat de icoontjes zijn getoont
+var count = 0;							//Deze moet altijd van 0 starten.
+var selectNummer = 0;					//De nummer van de afbeelding die de gebruiker zal kiezen.
+var juistGekozen = true; 				//Bool voor te zien of de gebruiker juist of fout heeft gekozen.
+var levens = 3; 						//Je levens.
+var score = 0; 							//Je score.
+var level = 1; 							//Het level.
+var counter; 							//Laat na de correcte tijd de iccontjes verdwijnen.
+var counter2; 							//Laat na de correcte tijd de "next level" of "try again" knop zien.
+var localData =" ";						//Tijdelijk variable voor text.
+var localData2 ="";						//Tijdelijk variable voor text.
+var localData3 ="";						//Tijdelijk variable voor text.
+var teveelKiezen = true; 				//Bool voor het zorgen dat mensen geen meer icoontjes kunnen aanduiden dan dat er opgegeven zijn.
+var foutenTeller = 0; 					//Aantal fouten per spelletje.
+var toonLevens;							//String voor levens op het scherm te tonen.
+var toonScore; 							//String voor punten op het scherm te tonen.
+	 
+ document.addEventListener(
+				"backbutton",
+				function() { window.location.href='index.html'; },
+				true);
+ 
+ 
+ 
+function readCookie(name)
+{
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) 
+	{
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+function storageReader()
+{
+	var output = $.Storage.get("theme");
+	if (output == "null")
+		{
+			output = 20;
+		}
+	alert("thema gelezen");
+	alert(output);
+	return output;
+}
+ function Moeilijkheid(tijdWeergeven2) //Functie voor het spel mee te geven op welk nieveau er wordt gespeeld.
+ { 
+	//readCookie(thema);
+	thema = storageReader();
+ 	tijdWeergeven = tijdWeergeven2; //De tijd dat de icoontjes worden meegegeven aan de globale variabele meegeven.
+ 	if(tijdWeergeven == 5000)
+	{
+		aantalIcootjes = 10;
+	}
+	toonIcoontjes(); //Laat de icoontjes op het scherm tonen.	
+	counter=setInterval(duidIcoontjesAan, tijdWeergeven);	//Laat na de correcte tijd de iccontjes verdwijnen.
+ }
+	 
+function toonIcoontjes() //Functie voor de icoontjes in random volgorde weer te geven.
+{	
+	//Maakt de div-structuren aan waar we text gaan kunnen inschrijven.
+	document.body.innerHTML="<div id='HartjesID'></div><div id='scoreID'></div><div id='current2' ></div>";
+	localData = 'You have '+ (tijdWeergeven/1000) +' seconds <br> to remember the correct order<div id="parentContainer"><div id="containerFiguurtjes">';
+	//alert(screen.width);
+	for(var i = 0; i < maxCount; i++)
+	{
+		count++;
+		nummer = Math.floor((Math.random()*aantalIcootjes)+1+thema); //Random afbeelding kiezen.
+		localData += '<img src="Fotos/'+ nummer +'.png" alt="Figuurtje">'; //Icoontje opnemen in string.
+		if (maxCount > 8 && (i == maxCount * 0.5 - 1 || i == maxCount / 2 - 0.5))
+		{
+			localData += '<br>';
+		}
+		getoondeItems[count-1] = nummer; //Icoontje opslagen in Array.
+		if(count > maxCount)
+		{
+			localData += '</div></div>';//Op het einde de div tag sluiten.
+		}
+	}
+	toonData(); //Toon alles op het scherm.
+}
+function duidIcoontjesAan() //Functie voor het mogelijk maken van de juiste icoontjes te selecteren.
+{
+	
+	clearInterval(counter); //Stop de timer.
+	
+	//Volgende 3 localData statements horen samen! 
+	localData = 'Choose the right symbol order<div id="parentContainer"><div id="containerFiguurtjes">';
+	for(var i = 0; i < aantalIcootjes; i++) //Alle bestaande icoontjes op het scherm weergeven zodat de gebruiker er uit kan kiezen.
+	{
+		//Alle icoontjes worden op het scherm getoond en de juiste variabelen worden meegegeven in de onclick functie.
+		localData += '<a href="#" onclick="GeselecteerdeIccontjesWeergeven('+ (i+1+thema)+')"> <img src="Fotos/'+ (i+1+thema) +'.png"></a>';
+		if (aantalIcootjes == 10 && i == 4)
+		{
+			localData += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>';
+		}
+	} 
+	localData += '&nbsp;&nbsp;&nbsp; <a href="#" onclick="VerwijderIccontje()"> <img src="Fotos/0.png"></a></div></div>';
+	document.getElementById('current2').innerHTML = localData;
+
+	localData += '<p>Chosen symbol:</p><div id="parentContainer"><div id="containerFiguurtjes"></div></div>';
+	
+
+}
+function VerwijderIccontje() //Functie voor et verwijderen van een icoontje indien je fout hebt geklikt.
+{
+	if (teveelKiezen == true && selectNummer > 0)
+	{
+		//Functie voor de laatste 40 tekens (of maw de laatste afbeelding) uit de string te verwijderen.
+		localData = localData.substring(0, localData.length - 40); 
+		localData2 = localData2.substring(0, localData2.length - 40); 
+		selectNummer--; //De teller die de correcte plaats in de array bijhoud mee laten aftellen.
+		document.getElementById('current2').innerHTML = localData;
+	}
+}
+function GeselecteerdeIccontjesWeergeven(soortIcoontje) //Functie die je aangeduide icoontjes weergeeft. Parameter houd bij welk icoontje er is aangeduid.
+{
+	//window.navigator.vibrate(2000);
+	if (teveelKiezen == true)
+	{
+		localData2 += '<img src="Fotos/'+ soortIcoontje +'.png" alt="Figuurtje">';
+		localData += '<img src="Fotos/'+ soortIcoontje +'.png" alt="Figuurtje">';
+		geselecteerdeItems[selectNummer] = soortIcoontje; //Geselecteerd icoonjte opslaan in array.
+		selectNummer++; //Counter zodat je elk geselecteerd item in een andere plaats van de array opslaat.
+	}
+	
+	if (selectNummer == maxCount && teveelKiezen == true) //Als we het juiste aantal icoonjtes geselecteerd hebben dan gebeurd het volgende:
+	{
+		
+		teveelKiezen = false; //Hierdoor gaan we geen icoontje meer kunnen kiezen na we ze allemaal al gekozen hebben.
+		localData = '<p>Chosen symbol:</p><div id="parentContainer"><div id="containerFiguurtjes">' + localData2 + '</div></div>'; //Gekozen volgorde laten zien.
+		
+		//Volgende 3 document.writeln statements horen samen! 
+		localData += '</br> The correct order:<div id="parentContainer"><div id="containerFiguurtjes">';
+		for(var i = 0; i < maxCount; i++) 
+		{
+			localData += '<img src="Fotos/'+ (getoondeItems[i]) +'.png">'; //Echte volgorde laten zien.
+		}
+		localData += '</div></div>';
+		
+		//Alle items van beide arrays (getoonde en gekozen) vergelijken met elkaar. Indien ze niet aan elkaar gelijk zijn, dan is er een fout gebeurdt en wordt dit geregistreerd.
+		for(var i = 0; i < maxCount; i++)
+		{
+			if(getoondeItems[i] != geselecteerdeItems[i])
+			{
+				juistGekozen = false;
+				foutenTeller++;
+			}
+		}
+		
+		//Juiste info op het scherm tonen.
+		if (juistGekozen == true) //Wanner er geen fouten gemaakt zijn.
+		{
+			localData += '<b><u>Wuuuhuuuuuwww!! No errors</u></b>';
+			level++;
+			maxCount++;//Het aantal icoontjes dat op het scherm getoont moet worden.
+		}
+		else //Wanneer er wel fouten zijn gemaakt.
+		{
+			localData += '<b><u>'+ foutenTeller +' errors. Better luck next time :(.</u></b>';
+			levens--;
+		}		
+		//Score berekenen.
+		score += maxCount + 10 - (tijdWeergeven / 1000) - foutenTeller; 
+		toonData();
+		counter2 = setInterval(LevelKlaarmaken, tijdToonNextLevelKnop);	//Laat na de correcte tijd de iccontjes verdwijnen.
+	}
+	document.getElementById('current2').innerHTML = localData;
+	
+}
+function LevelKlaarmaken()
+{	
+	clearInterval(counter2); //Stop de timer.
+	count = 0;		//Deze moet altijd van 0 starten.
+	selectNummer = 0;	//De nummer van de afbeelding die de gebruiker zal kiezen.
+	foutenTeller = 0;	//Hoeveel fouten de gerbuiker heeft gemaakt weer restten.
+	if (levens > 0 && level <= 11) //Wanneer het spel nog niet gedaan is.
+	{
+		if (juistGekozen == true) //En je had geen fouten gemaakt.
+		{
+			localData = '<p><button data-inline="true" id="button" onClick="StartVolgendLevel()">Next level</button> <br>';
+		}
+		else //En je ad wel fouten gemaakt.
+		{
+			localData = '<p><button data-inline="true" id="button" onClick="StartVolgendLevel()">Try again</button> <br>';	
+		}	
+		localData += '<button data-inline="true" id="button" onClick="window.location.href=\'index.html\'">Main menu</button><br></p>';
+	}
+	else //Wanneer het spel gedaan is.
+	{
+		if (levens == 0)
+		{
+			localData = 'Game over<br>';
+		}
+		else
+		{
+			localData = 'You won!<br>';
+		}
+		localData += '<br><button data-inline="true" id="button" onClick="window.location.href=\'KeuzeMenu.html\'">Play again</button><br>';
+		localData += '<br><button data-inline="true" id="button" onClick="window.location.href=\'index.html\'">Main menu</button><br>';
+		localData += '<p>Created by Jonathan Sansens, Andy Verbaenen, Vincent Mc Kenzie en Aillan De Vos</p>';
+	}
+	document.getElementById('current2').innerHTML = localData;	
+}
+function StartVolgendLevel()
+{
+	
+	juistGekozen = true; //Bool voor te zien of de gebruiker juist of fout heeft gekozen.
+	localData2 = "";
+	teveelKiezen = true;
+	toonIcoontjes(); //Laat de icoontjes op het scherm tonen.
+	counter=setInterval(duidIcoontjesAan, tijdWeergeven);	//Laat na de correcte tijd de iccontjes verdwijnen.
+}
+function ExitFunction() //Functie voor het sluiten van de applicatie.
+{
+	 mosync.bridge.send([ "close" ]);
+}
+function toonData()
+{
+	toonLevens = '';
+	if (levens > 0) //Levens/hartjes op het scherm tonen.
+	{
+		for(var i = 0; i < levens; i++)
+		{
+			toonLevens += '<img src="Fotos/Hartje.png">';
+		}
+	}
+	else
+	{
+		toonLevens += "<a href='#' onClick='window.location.href=\"index.html\"'><img src='Fotos/0Levens.png'></a>";
+	}
+	toonScore = 'Score: ' + score;
+	document.getElementById('HartjesID').innerHTML = toonLevens;
+	document.getElementById('scoreID').innerHTML = toonScore;
+	document.getElementById('current2').innerHTML = localData;
+}
+    </script>
+	</head> 
+ 	<!-------------------------------------------------------------------------------------------------------->     
+	
+    
+    
+    <body id="bla">  
+		
+				<button data-inline="true" id="button" onClick="Moeilijkheid(8000)">Easy</button> <br>
+				<button data-inline="true" id="button" onClick="Moeilijkheid(6000)">Middle</button><br>
+				<button data-inline="true" id="button" onClick="Moeilijkheid(4000)">Hard</button><br>
+                <button data-inline="true" id="button" onClick="Moeilijkheid(5000)">Very Hard</button><br>
+                <button data-inline="true" id="button" onClick="window.location.href='PlayerInformation.html'">Add Player Information</button><br>
+</body>
+</html>

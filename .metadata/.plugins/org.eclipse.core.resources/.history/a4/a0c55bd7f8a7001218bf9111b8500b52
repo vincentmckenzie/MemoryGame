@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Memory Game</title>    
+  
+  
+  <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.3.0.min.css">
+  <link rel="stylesheet" href="css/owncss.css">
+  <script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+  <script src="js/jquery.js"></script>  
+  <script src="js/jquery.mobile-1.3.0.js"></script>  
+  <script src="js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css" /> 
+  <script type="text/javascript">
+ 
+ document.addEventListener(
+				"backbutton",
+				function() { window.location.href='index.html'; },
+				true);
+
+  </script>
+  <script>
+  $(function() {
+    $( "#tabs" ).tabs();
+  });
+  </script>
+	</head> 
+ 	<!--------------------------------------------------------------->     
+	
+    
+    
+    <body id="bla">  
+
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Sleep</a></li>
+    <li><a href="#tabs-2">Sport</a></li>
+    <li><a href="#tabs-3">Alcohol</a></li>
+    <li><a href="#tabs-4">Drugs</a></li>
+  </ul>
+  <div id="tabs-1">
+    <p>What was the last time you slept? <br>
+    <input type="text" name="LaatstGeslapen" width="200px">
+    How long did you sleep?<br>
+    <input type="text" name="AantalUrenSlaap" width="200px"> </p>
+  </div>
+  <div id="tabs-2">
+    <p>What was the last time you did sport? <br>
+    <input type="text" name="LaatstGesport" width="200px">
+    How long?<br>
+    <input type="text" name="AantalUrenSport" width="200px"> </p>
+  </div>
+  <div id="tabs-3">
+    <p>What was the last time you drank alcohol? <br>
+    <input type="text" name="laatsteKeerGedronken" width="200px">
+    How many?<br>
+    <input type="text" name="HoeveelGedronken" width="200px"> </p>
+  </div>
+  <div id="tabs-4">
+    <p>What was the last time you did drugs? <br>
+    <input type="text" name="laatsteKeerDrugs" width="200px">
+    How many?<br>
+    <input type="text" name="HoeveelDrus" width="200px"> </p>
+  </div>
+</div>
+<button data-inline="true" id="button" onClick="window.location.href='KeuzeMenu.html'">Save user data.</button>
+	 
+	</body>
+</html>

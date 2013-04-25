@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Memory Game</title>    
+  
+  
+  <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.3.0.min.css">
+  <link rel="stylesheet" href="css/owncss.css">
+  <script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+  <script src="js/jquery.js"></script>  
+  <script src="js/jquery.mobile-1.3.0.js"></script> 
+  <script src="js/jquery.cookie.js"></script> 
+  <script type="text/javascript">
+ 
+ document.addEventListener(
+				"backbutton",
+				function() { window.location.href='index.html'; },
+				true);
+
+
+ 
+  </script>
+	</head> 
+ 	<!-------------------------------------------------------------------------------------------------------->     
+	
+    
+    
+    <body id="bla">  
+				<button data-inline="true" id="button" onClick="window.location.href='Info.html'">How to play</button> <br>
+				<button data-inline="true" id="button" onClick="window.location.href='ChangeTheme.html'">Change Theme</button> <br>
+				<button data-inline="true" id="button" onClick="">Volume</button><br>
+                <button data-inline="true" id="button" onClick="window.location.href='index.html'">Back to menu.</button> <br>
+</body>
+</html>
